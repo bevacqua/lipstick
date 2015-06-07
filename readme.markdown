@@ -10,7 +10,7 @@ This module is an alternative to [sticky-session][4], usually most useful when r
 
 # inspiration
 
-This module is inspired on the suggestions outlined by [elad][1] in their [`node-cluster-socket.io`][2] repository. All credit goes to him.
+This module is inspired on the suggestions outlined by [elad][1] in their [`node-cluster-socket.io`][2] repository. All credit goes to them.
 
 I built upon the idea by adding support for IPv6, and attempted to streamline the implementation as much as possible for the `lipstick` consumers so that only minimal changes to your application are needed.
 
