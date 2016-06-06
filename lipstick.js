@@ -4,19 +4,51 @@ var net = require('net');
 var path = require('path');
 var cluster = require('cluster');
 
-function lipstick (appfile, options) {
-  if (typeof appfile !== 'string') {
-    options = appfile;
-    appfile = './app.js';
-  }
+function lipstick (appfile, options, done) {
+  var parsed = parse.apply(null, arguments);
   if (cluster.isMaster) {
-    master(appfile, options || {});
+    master(parsed.appfile, parsed.options, parsed.done);
   } else {
     throw new Error('workers shouldn\'t use lipstick!');
   }
 }
 
-function master (appfile, options) {
+function parse (appfile, options, done) {
+  var parsed = {};
+  var length = arguments.length;
+  if (length === 1) {
+    if (typeof appfile === 'function') {
+      done = appfile;
+      appfile = undefined;
+    } else if (typeof appfile !== 'string') {
+      options = appfile;
+      appfile = undefined;
+    }
+  }
+  if (length === 2) {
+    if (typeof appfile === 'string') {
+      if (typeof options === 'function') {
+        done = options;
+        options = undefined;
+      } else {
+        done = noop;
+      }
+    } else {
+      done = options;
+      options = appfile;
+      appfile = undefined;
+    }
+  }
+  appfile = appfile || './app.js';
+  options = options || {};
+  done = done || noop;
+  parsed.appfile = appfile;
+  parsed.options = options;
+  parsed.done = done;
+  return parsed;
+}
+
+function master (appfile, options, done) {
   var workerCount = options.workers || defaultWorkerCount();
   var workers = [];
   var clusterOptions = {
@@ -51,7 +83,7 @@ function master (appfile, options) {
     var port = options.port || process.env.PORT;
     server.listen(port, listening);
     function listening () {
-      console.log('lipstick listening on port %s', port);
+      done(null, port);
     }
   }
 }
@@ -89,6 +121,9 @@ function listen (server, port, done) {
     server.emit('connection', connection);
     connection.resume();
   }
+}
+
+function noop () {
 }
 
 lipstick.listen = listen;

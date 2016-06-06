@@ -40,7 +40,7 @@ require('lipstick')();
 
 The API for your `cluster.js` module is detailed below.
 
-# `lipstick(appfile?, options?)`
+# `lipstick(appfile?, options?, done?)`
 
 The `appfile` defaults to `./app.js` and will be used as the worker process. Options are detailed below.
 

@@ -1,3 +1,7 @@
+# 1.7.0 No Log
+
+- Instead of logging an optional `done` callback is preferred instead
+
 # 1.6.1 Shadow Drake
 
 - Improved shadow positioning when `revertOnSpill` is `true`
