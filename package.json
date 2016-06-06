@@ -1,6 +1,6 @@
 {
   "name": "lipstick",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Sticky sessions for Node.js clustering done responsibly",
   "main": "lipstick.js",
   "repository": {
